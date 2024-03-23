@@ -1087,8 +1087,19 @@ export class NeuralNetwork<
       let trueNeg = 0;
 
       for (let i = 0; i < preparedData.length; i++) {
-        const output = this.runInput(preparedData[i].input);
-        const target = preparedData[i].output;
+        let output = this.runInput(preparedData[i].input);
+        // @ts-ignore
+        if (output.toArray) {
+            // @ts-ignore  
+            output = output.toArray();
+        }
+
+        let target = preparedData[i].output;
+        // @ts-ignore
+        if (target.toArray) {
+            // @ts-ignore
+            target = target.toArray();
+        }
         const actual = output[0] > this.options.binaryThresh ? 1 : 0;
         const expected = target[0];
 
